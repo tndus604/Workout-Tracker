@@ -20,7 +20,7 @@ const workoutSchema = new Schema({
         },
         duration: {
             type: Number,
-            required: "Enter your exercise duration"
+            required: "Enter your exercise duration in minutes"
         },
         distance: {
             type: Number
@@ -35,8 +35,14 @@ const workoutSchema = new Schema({
             type: Number
         }       
     }]
+},
+{
+    toJSON: {
+        virtuals: true;
+    }
 });
 
+//add totalDuration to schema
 workoutSchema.virtual("totalDuration").get(function() {
     return this.exercises.reduce((total, exercise) => {
         return total + exercise.duration;

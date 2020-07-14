@@ -1,57 +1,59 @@
-var express = require("express");
-var router = express.Router();
-const Workout = require("../models/workout.js");
+const router = require("express").Router();
+const Workout = require("../models/workout");
 
 module.exports = function(app) {
-    router.use(function timeLog (req, res, next) {
-        console.log("Time: ", Date.now());
-        next();
-    });
-    
-    router.post("/api/workouts", ({ body }, res) => {
-        Workout.create(body)
-          .then(dbWorkout => {
-            res.json(dbWorkout);
-          })
-          .catch(err => {
-            res.status(400).json(err);
-          });
-      });
-      
-    router.get("/api/workouts", (req, res) => {
-        Workout.find({})
-          .sort({ date: -1 })
-          .then(dbWorkout => {
-            res.json(dbWorkout);
-          })
-          .catch(err => {
-            res.status(400).json(err);
-          });
-    });
-      
-    router.push("/api/workouts/:id", ({ body, params }, res) => {
-        Workout.findByIdAndUpdate(
-            params.id,
-            { $push: {exercises: body }},
-      
-            { new: true, runValidators: true }
-        ).then (dbWorkout => {
-              res.json(dbWorkout);
-        }).catch (err => {
-              res.json(err);
+    app.get("/api/workouts", function(req, res){
+        Workout.find()
+        .then(data => {
+            res.json(data);
         })
+        .catch(err => {
+            res.status(400).json(err);
+        });
     });
-      
-    router.get("/api/workouts/range", (req,res) => {
+
+    app.post("/api/workouts", function(req, res){
+        Workout.create({})
+            .then(data => {
+                res.json(data);
+            })
+            .catch(err => {
+                res.status(400).json(err);
+            });
+    });
+
+    app.get("/api/workouts/range", function(req,res){
         Workout.find({})
-            .then(dbWorkout => {
+            .then(data => {
                 //console.log(dbWorkout)
-                res.json(dbWorkout);
+                res.json(data);
             })
             .catch(err => {
                 res.json(err);
             })
     });
+
+    app.post("/api/workouts/range", function(req, res) {
+        Workout.create({})
+        .then(data => res.json(data))
+        .catch(err => {
+            res.json(err);
+        })
+    })
+
+    app.push("/api/workouts/:id", ({ body, params }, res) => {
+        Workout.findByIdAndUpdate(
+            params.id,
+            { $push: {exercises: body }},
+      
+            { new: true, runValidators: true }
+        ).then (data => {
+              res.json(data);
+        }).catch (err => {
+              res.json(err);
+        })
+    });
 }
+
 
 
