@@ -21,3 +21,5 @@ app.use(require("./public/api.js"));
 app.listen(PORT, () => {
   console.log(`App running on port ${PORT}!`);
 });
+
+module.exports = router;
