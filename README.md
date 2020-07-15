@@ -14,6 +14,7 @@ The application is deployed on Heroku. https://bibliotheque-chaise-37450.herokua
   * NodeJS
   * ExpressJs
   * MongoDB
+  * Mongoose.js
   * ChartJS
 
 
